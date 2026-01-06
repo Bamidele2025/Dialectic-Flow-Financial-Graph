@@ -63,7 +63,7 @@ graph TD
 
 ### 1. 安裝 (Installation)
 ```bash
-git clone [https://github.com/YuJunWang/Dialectic-Flow-Financial-Graph.git](https://github.com/YuJunWang/Dialectic-Flow-Financial-Graph.git)
+git clone https://github.com/YuJunWang/Dialectic-Flow-Financial-Graph.git
 cd Dialectic-Flow-Financial-Graph
 pip install -r requirements.txt
 ```
