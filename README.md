@@ -3,6 +3,10 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![LangGraph](https://img.shields.io/badge/LangGraph-0.0.1-orange)
+![LangChain](https://img.shields.io/badge/LangChain-🦜️🔗-00C4CC?style=flat)
+![Groq](https://img.shields.io/badge/Groq-LPU-F55036?style=flat)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat)
+
 
 這是一個 **Agentic** 的金融分析師團隊，透過模擬 **Bull (多頭/成長型)** 與 **Bear (空頭/做空者)** 之間的辯證過程，交由 **Manager (經理/上司)** 做第三方判斷，產出投資報告，並設定 **Storyteller (說書人)** 角色，協助快速理解目前這支股票的狀況。
 
@@ -94,7 +98,7 @@ Dialectic-Flow-Financial-Graph/
 ```
 
 ## 📒 Notebooks
-[![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github/YuJunWang/Dialectic-Flow-Financial-Graph/blob/main/notebooks/Dialectic-Flow-Financial-Graph.ipynb)
+[![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github/YuJunWang/Dialectic-Flow-Financial-Graph/blob/main/notebooks/Dialectic_Flow_Financial_Graph.ipynb)
 
 
 ## 👤 作者 (Author)
