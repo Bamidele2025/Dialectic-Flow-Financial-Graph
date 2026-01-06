@@ -1,6 +1,5 @@
 # Dialectic Flow Financial Graph 🐂🐻
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![LangGraph](https://img.shields.io/badge/LangGraph-0.0.1-orange)
 ![LangChain](https://img.shields.io/badge/LangChain-🦜️🔗-00C4CC?style=flat)
