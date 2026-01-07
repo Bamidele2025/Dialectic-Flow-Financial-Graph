@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialectic-Flow Financial Graph</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+/* 1. THE SETUP & VARS */
+:root {
+    --bg-body: #1a1a1a;
+    --bg-slide: #000000;       /* Pure Black */
+    --text-main: #f5f5f5;
+    --text-muted: #a3a3a3;
+    --accent: #deff9a;         /* Tech Green */
+    --bull-color: #4ecca3;     /* Bull Green */
+    --bear-color: #ff6b6b;     /* Bear Red */
+    --manager-color: #ffd700;  /* Manager Gold */
+    --card-bg: #1f1f1f;
+    --border-color: #333;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-body);
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 1fr;
+  margin: 0;
+  min-height: 100vh;
+  padding: 40px 0;
+  place-items: center;
+  font-family: 'Urbanist', sans-serif;
+  color: var(--text-main);
+}
+
+/* 2. SLIDE CONTAINER */
+.slide-container {
+  background-color: var(--bg-slide);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  height: 720px;
+  width: 1280px;
+  overflow: hidden;
+  padding: 60px;
+  position: relative;
+  border: 1px solid #333;
+  page-break-after: always; /* Ensure each slide prints on a new page */
+}
+
+/* Background Accents */
+.slide-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(222, 255, 154, 0.05) 0%, rgba(0,0,0,0) 70%);
+    z-index: 0;
+}
+
+.slide-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 3. TYPOGRAPHY */
+h1, h2, h3 {
+  color: var(--text-main);
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: 72px; line-height: 1.1; }
+h2 { font-size: 48px; margin-bottom: 30px; width: 100%; }
+h3 { font-size: 24px; margin-bottom: 10px; }
+
+h1 span, h2 span, .highlight { color: var(--accent); }
+
+p, li {
+    color: var(--text-muted);
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+strong { color: var(--accent); }
+
+/* Tech Stack Tags */
+.tech-stack {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.tech-tag {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 4. LAYOUT UTILITIES */
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  height: 100%;
+  align-items: center;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    height: 100%;
+    align-items: stretch;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.icon-box {
+    font-size: 32px;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+
+/* 5. SLIDE SPECIFIC STYLES */
+
+/* Slide 1: Cover with Simulated K-Line */
+.cover-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 0;
+    padding: 0;
+    align-items: center;
+    height: 100%;
+}
+.cover-content {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+.cover-visual-container {
+    height: 100%;
+    width: 100%;
+    background: #050505;
+    border-left: 1px solid #333;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CSS K-Line Chart Animation */
+.k-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    height: 400px;
+    padding: 20px;
+}
+.k-candle {
+    width: 20px;
+    background: #555;
+    position: relative;
+    border-radius: 2px;
+    animation: pulseHeight 3s infinite alternate ease-in-out;
+}
+.k-candle::before { /* Wick */
+    content: '';
+    position: absolute;
+    top: -20px; bottom: -20px; left: 50%;
+    width: 2px;
+    background: inherit;
+    transform: translateX(-50%);
+    opacity: 0.5;
+}
+.k-candle.up { background: var(--bull-color); box-shadow: 0 0 10px rgba(78, 204, 163, 0.3); }
+.k-candle.down { background: var(--bear-color); box-shadow: 0 0 10px rgba(255, 107, 107, 0.3); }
+
+@keyframes pulseHeight {
+    0% { transform: scaleY(0.9); opacity: 0.8; }
+    100% { transform: scaleY(1.1); opacity: 1; }
+}
+
+.author-info {
+    margin-top: 60px;
+    font-size: 18px;
+    color: #888;
+    border-left: 3px solid var(--accent);
+    padding-left: 15px;
+}
+
+/* Slide 2: Split Screen (Compact Headers) */
+.split-screen {
+    display: flex;
+    height: 100%;
+    margin: -60px;
+}
+.split-left {
+    flex: 1;
+    background: #0d0d0d;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid #333;
+}
+.split-right {
+    flex: 1;
+    background: var(--bg-slide);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+.split-right::before {
+    content: '';
+    position: absolute;
+    top: 60px; bottom: 60px; left: 0;
+    width: 4px;
+    background: var(--accent);
+}
+
+.compact-h2 {
+    font-size: 32px;
+    margin-bottom: 25px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Slide 4: Flowchart */
+.flowchart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    padding: 40px 0;
+    gap: 30px;
+}
+.flow-node {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 25px 15px;
+    border-radius: 8px;
+    width: 220px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    font-size: 22px;
+}
+.flow-node span {
+    font-size: 16px;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 5px;
+}
+.flow-arrow {
+    flex-grow: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--text-muted);
+    position: relative;
+}
+.flow-arrow::after {
+    content: '►';
+    position: absolute;
+    right: -8px;
+    top: -10px;
+    color: var(--text-muted);
+}
+.loop-box {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 26%; right: 26%;
+    border: 2px dashed var(--accent);
+    border-radius: 12px;
+    pointer-events: none;
+    z-index: 1;
+}
+.loop-label {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-slide);
+    color: var(--accent);
+    padding: 0 10px;
+    font-family: 'JetBrains Mono';
+    font-size: 16px;
+}
+
+/* Slide 6: Decision Tree - Compact Mode */
+#slide6 .two-column {
+    /* Align items to center vertically, avoiding stretch */
+    align-items: center; 
+}
+#slide6 .card {
+    height: auto; /* Allow shrink */
+    min-height: 200px;
+    justify-content: center;
+    padding: 40px 30px;
+}
+.decision-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    height: auto; /* Let it flow */
+    width: 100%;
+}
+.decision-node {
+    padding: 10px 30px;
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+    border-radius: 30px;
+    font-weight: bold;
+}
+.branch-container {
+    display: flex;
+    gap: 30px;
+    position: relative;
+    width: 100%;
+}
+.branch {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.branch-label {
+    text-align: center; 
+    margin-bottom: 10px; 
+    font-weight: bold;
+    font-family: 'JetBrains Mono';
+}
+.branch-card {
+    border: 1px solid #333;
+    padding: 20px;
+    border-radius: 8px;
+    height: auto; /* Fit to text content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Slide 7: Agent Chat UI */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background: #111;
+    border-radius: 12px;
+    border: 1px solid #333;
+    height: 100%;
+    overflow: hidden;
+}
+.chat-bubble {
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.4;
+    position: relative;
+}
+.chat-bubble.bull {
+    background: rgba(78, 204, 163, 0.1);
+    border-left: 4px solid var(--bull-color);
+    margin-right: 40px;
+}
+.chat-bubble.bear {
+    background: rgba(255, 107, 107, 0.1);
+    border-left: 4px solid var(--bear-color);
+    margin-left: 40px;
+}
+.chat-header {
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 5px;
+    display: block;
+    text-transform: uppercase;
+}
+
+/* Slide 8: Challenges - Adjusted Height & Centering */
+.prob-sol-card {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    padding: 30px 20px;
+    height: auto;
+    min-height: 300px;
+}
+
+#slide8 .grid-3 {
+    align-items: center;
+    height: auto;
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+}
+#slide8 .prob-sol-card {
+    width: 32%;
+}
+
+/* Slide 9: Impact Cards */
+.impact-card {
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* Slide 10: Footer */
+.footer-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--text-main);
+    text-decoration: none;
+    margin-top: 30px;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 5px;
+}
+
+/* PRINT PDF SUPPORT */
+@media print {
+    @page {
+        size: 1280px 720px;
+        margin: 0;
+    }
+    body {
+        background-color: #000;
+        margin: 0;
+        padding: 0;
+        display: block;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .slide-container {
+        page-break-after: always;
+        break-after: page;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        width: 100%;
+        height: 100vh;
+    }
+    .slide-container::before {
+        /* Ensure background gradient prints */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Cover with CSS K-Line Chart -->
+<div class="slide-container" id="slide1" style="padding: 0; overflow: hidden;">
+    <div class="cover-layout">
+        <div class="cover-content">
+            <h1>Dialectic-Flow <br><span>Financial Graph</span></h1>
+            <p class="subtitle" style="font-size: 24px; color: var(--text-muted); margin-top: 10px;">
+                基於 LangGraph 與多代理辯證的 <br>AI 投資決策系統
+            </p>
+            
+            <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">LangChain</span>
+                <span class="tech-tag">Groq</span>
+                <span class="tech-tag">RAG</span>
+            </div>
+
+            <div class="author-info">
+                <strong>Yu-Jun Wang</strong><br>
+                Data Engineer / AI-Augmented Developer
+            </div>
+        </div>
+        
+        <!-- Simulated K-Line Visual -->
+        <div class="cover-visual-container">
+            <div class="k-chart">
+                <div class="k-candle up" style="height: 120px; animation-delay: 0s;"></div>
+                <div class="k-candle down" style="height: 80px; animation-delay: 0.2s;"></div>
+                <div class="k-candle up" style="height: 150px; animation-delay: 0.4s;"></div>
+                <div class="k-candle up" style="height: 200px; animation-delay: 0.6s;"></div>
+                <div class="k-candle down" style="height: 100px; animation-delay: 0.8s;"></div>
+                <div class="k-candle up" style="height: 240px; animation-delay: 1.0s;"></div>
+                <div class="k-candle up" style="height: 180px; animation-delay: 1.2s;"></div>
+                <div class="k-candle down" style="height: 140px; animation-delay: 1.4s;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 2: Problem (Split Screen - Single Line Titles) -->
+<div class="slide-container" id="slide2" style="padding: 0; overflow: hidden;">
+    <div class="slide-content split-screen" style="width: 100%; margin: 0;">
+        <div class="split-left">
+            <h3 style="color: var(--bear-color);"><i class="fa-solid fa-triangle-exclamation"></i> 痛點 (Pain Points)</h3>
+            <!-- Compact H2: Single Line -->
+            <h2 class="compact-h2">單一觀點的幻覺與阿諛</h2>
+            <ul>
+                <li style="font-size: 18px; margin-bottom: 15px;">
+                    <strong>現狀 (Status Quo):</strong><br>
+                    傳統 LLM 容易產生「幻覺」，且傾向於討好使用者 (Sycophancy)，缺乏客觀性。
+                </li>
+                <li style="font-size: 18px;">
+                    <strong>後果 (Risk):</strong><br>
+                    產出過於樂觀、缺乏批判深度的金融分析，無法做為專業決策依據。
+                </li>
+            </ul>
+        </div>
+        <div class="split-right">
+            <h3 style="color: var(--accent);"><i class="fa-solid fa-lightbulb"></i> 解決方案 (Solution)</h3>
+            <!-- Compact H2: Single Line -->
+            <h2 class="compact-h2">引入辯證法 Dialectic Method</h2>
+            <ul>
+                <li style="font-size: 18px; margin-bottom: 15px; color: var(--text-main);">
+                    <strong>真理越辯越明:</strong><br>
+                    Thesis (多頭) vs Antithesis (空頭) -> Synthesis (共識)。
+                </li>
+                <li style="font-size: 18px; color: var(--text-main);">
+                    <strong>自我修正機制:</strong><br>
+                    利用多代理人 (Multi-Agent) 架構，透過衝突互相糾錯，消除單一盲點。
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: Concept (Roles) -->
+<div class="slide-container" id="slide3">
+    <div class="slide-content">
+        <h2>核心概念: <span>Thinking, Fighting, Consensus</span></h2>
+        <div class="grid-3" style="margin-top: 40px; height: 70%;">
+            <!-- Bull -->
+            <div class="card" style="border-top: 4px solid var(--bull-color);">
+                <div class="icon-box" style="color: var(--bull-color);">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                </div>
+                <h3>The Bull (多頭)</h3>
+                <p style="font-size: 18px; margin-bottom: 10px; color: var(--bull-color);">Role: Fanatic Investor</p>
+                <p style="font-size: 18px;">尋找成長機會與市場催化劑。樂觀解讀財報訊號。</p>
+            </div>
+            
+            <!-- Bear -->
+            <div class="card" style="border-top: 4px solid var(--bear-color);">
+                <div class="icon-box" style="color: var(--bear-color);">
+                    <i class="fa-solid fa-magnifying-glass-dollar"></i>
+                </div>
+                <h3>The Bear (空頭)</h3>
+                <p style="font-size: 18px; margin-bottom: 10px; color: var(--bear-color);">Role: Forensic Accountant</p>
+                <p style="font-size: 18px;">挖掘監管風險與估值過高問題。挑戰所有假設。</p>
+            </div>
+            
+            <!-- Manager -->
+            <div class="card" style="border-top: 4px solid var(--manager-color);">
+                <div class="icon-box" style="color: var(--manager-color);">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                </div>
+                <h3>The Manager (經理)</h3>
+                <p style="font-size: 18px; margin-bottom: 10px; color: var(--manager-color);">Role: Logic Coach</p>
+                <p style="font-size: 18px;">不參與辯論，僅審查邏輯因果，做出最終裁決。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Architecture (Closer, Larger Text) -->
+<div class="slide-container" id="slide4">
+    <div class="slide-content">
+        <h2>系統架構: <span>LangGraph Self-Reflection Loop</span></h2>
+        
+        <div class="flowchart-container" style="background: rgba(255, 255, 255, 0.05); border-radius: 12px; margin-top: 20px;">
+            <div class="loop-box">
+                <span class="loop-label"><i class="fa-solid fa-rotate"></i> Reflection Loop</span>
+            </div>
+
+            <!-- Nodes -->
+            <div class="flow-node">
+                <i class="fa-solid fa-database" style="color: var(--accent);"></i><br>
+                <strong>Researcher</strong><br>
+                <span>Data Ingestion</span>
+            </div>
+
+            <div class="flow-arrow"></div>
+
+            <div class="flow-node" style="border-color: var(--accent); box-shadow: 0 0 10px rgba(222, 255, 154, 0.2);">
+                <i class="fa-solid fa-comments" style="color: var(--manager-color);"></i><br>
+                <strong>Debate</strong><br>
+                <span>Bull vs Bear</span>
+            </div>
+
+            <div class="flow-arrow"></div>
+
+            <div class="flow-node">
+                <i class="fa-solid fa-gavel" style="color: var(--manager-color);"></i><br>
+                <strong>Review</strong><br>
+                <span>Gatekeeper</span>
+            </div>
+
+            <div class="flow-arrow"></div>
+
+            <div class="flow-node">
+                <i class="fa-solid fa-pen-nib" style="color: var(--accent);"></i><br>
+                <strong>Storyteller</strong><br>
+                <span>HTML Publish</span>
+            </div>
+        </div>
+        
+        <p style="margin-top: 30px; text-align: center;">
+            <i class="fa-solid fa-code-branch"></i> 
+            <strong>核心機制：</strong> Review Node 評分若低於門檻，將強制退回 Debate Node 進行新一輪辯證。
+        </p>
+    </div>
+</div>
+
+<!-- Slide 5: Workflow (Funnel) -->
+<div class="slide-container" id="slide5">
+    <div class="slide-content">
+        <h2>關鍵技術 I: <span>Agentic Workflow & Persona</span></h2>
+        <div class="two-column">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="card" style="display: flex; flex-direction: row; align-items: center; gap: 20px; padding: 20px;">
+                    <i class="fa-solid fa-user-tag" style="font-size: 32px; color: var(--accent);"></i>
+                    <div>
+                        <h3 style="font-size: 20px; margin: 0;">System Message Design</h3>
+                        <p style="font-size: 16px; margin: 5px 0 0;">Prompt Engineering 賦予 Agent 鮮明人設。</p>
+                    </div>
+                </div>
+                <div class="card" style="display: flex; flex-direction: row; align-items: center; gap: 20px; padding: 20px;">
+                    <i class="fa-solid fa-link" style="font-size: 32px; color: var(--manager-color);"></i>
+                    <div>
+                        <h3 style="font-size: 20px; margin: 0;">Causality Alignment</h3>
+                        <p style="font-size: 16px; margin: 5px 0 0;">Logic Feedback 拒絕缺乏證據的推論。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: var(--card-bg); padding: 30px; border: 1px solid var(--border-color); border-radius: 8px; position: relative;">
+                <div style="font-family: 'JetBrains Mono'; font-size: 14px; color: var(--text-muted);">
+                    <span style="color: #c792ea;">role</span>: <span style="color: #ecc48d;">"system"</span>,<br>
+                    <span style="color: #c792ea;">content</span>: <span style="color: #deff9a;">"You are a cynical short-seller. Do not trust management guidance..."</span>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <i class="fa-solid fa-arrow-down" style="color: var(--accent);"></i>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <span class="tech-tag" style="color: var(--bear-color); border-color: var(--bear-color); background: rgba(255, 107, 107, 0.1);">Bear Agent Activated</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: RAG (Compact & Text-Fit) -->
+<div class="slide-container" id="slide6">
+    <div class="slide-content">
+        <h2>關鍵技術 II: <span>Active RAG & Memory</span></h2>
+        <div class="two-column">
+            <!-- Left Card: Compact -->
+            <div class="card">
+                <h3 style="color: var(--accent);"><i class="fa-solid fa-magnifying-glass"></i> Active Research</h3>
+                <p style="font-size: 18px;">自動生成「短尾關鍵字」 (e.g., "TSLA 10K 2025")，搜尋 DuckDuckGo 補足資訊。</p>
+                <hr style="border: 0; border-top: 1px solid #333; margin: 15px 0;">
+                <h3 style="color: var(--manager-color);"><i class="fa-solid fa-toggle-on"></i> Smart Toggle</h3>
+                <p style="font-size: 18px;">依據辯論品質分數，動態切換記憶模式。</p>
+            </div>
+
+            <!-- Visualization: Compact Branch Cards -->
+            <div class="decision-tree">
+                <div class="decision-node">
+                    <strong>Quality Score Check</strong>
+                </div>
+                <div class="branch-container">
+                    <div class="branch">
+                        <div class="branch-label" style="color: var(--bear-color);">Score < 75</div>
+                        <div class="branch-card" style="border-color: var(--bear-color);">
+                            <i class="fa-solid fa-trash-can" style="color: var(--bear-color); font-size: 24px; margin-bottom: 5px;"></i> 
+                            <h4 style="margin: 0 0 5px 0; font-size: 18px;">Amnesia Mode</h4>
+                            <span style="font-size: 14px; color: var(--text-muted); line-height: 1.3;">銷毀 Context<br>強制重啟以打破偏見</span>
+                        </div>
+                    </div>
+                    <div class="branch">
+                        <div class="branch-label" style="color: var(--bull-color);">Score > 75</div>
+                        <div class="branch-card" style="border-color: var(--bull-color);">
+                            <i class="fa-solid fa-floppy-disk" style="color: var(--bull-color); font-size: 24px; margin-bottom: 5px;"></i>
+                             <h4 style="margin: 0 0 5px 0; font-size: 18px;">Refinement Mode</h4>
+                            <span style="font-size: 14px; color: var(--text-muted); line-height: 1.3;">保留 Context<br>進行論點深度微調</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Demo (Chat Simulation) -->
+<div class="slide-container" id="slide7">
+    <div class="slide-content">
+        <h2>成果展示: <span>Visualized Intelligence</span></h2>
+        <div class="two-column">
+            <!-- Left: Chat Sim -->
+            <div class="chat-container">
+                <div class="chat-bubble bull">
+                    <span class="chat-header" style="color: var(--bull-color);">Bull Agent</span>
+                    營收年增率達 20%，顯示市場需求強勁，且新產品線毛利率高於預期...
+                </div>
+                <div class="chat-bubble bear">
+                    <span class="chat-header" style="color: var(--bear-color);">Bear Agent</span>
+                    但我注意到庫存周轉率下降，且這 20% 增長主要來自一次性合約，非核心業務...
+                </div>
+                <div class="chat-bubble" style="border: 1px solid var(--manager-color); background: rgba(255, 215, 0, 0.05); text-align: center; font-style: italic;">
+                    <span class="chat-header" style="color: var(--manager-color);">Manager (Verdict)</span>
+                    空方觀點有效。請多方針對庫存問題提出數據佐證。
+                </div>
+            </div>
+            
+            <div style="padding-left: 20px;">
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: var(--accent);">HTML Output</h3>
+                    <p>自動生成響應式網頁報告，包含 CSS 排版與互動元素。</p>
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: var(--manager-color);">Storyteller Engine</h3>
+                    <p>將生硬數據轉化為 "Hook, Battle, Verdict" 的敘事架構。</p>
+                </div>
+                <div>
+                    <h3>Matplotlib Integration</h3>
+                    <p>整合 K 線圖 (K-Line Chart) 與技術指標，提供量化佐證。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Challenges (Adjusted Height & Centering) -->
+<div class="slide-container" id="slide8">
+    <div class="slide-content">
+        <h2>技術挑戰與解法 <span>Challenges & Solutions</span></h2>
+        <div class="grid-3">
+            <!-- Card 1 -->
+            <div class="card prob-sol-card">
+                <i class="fa-solid fa-spider" style="color: var(--bear-color); font-size: 32px;"></i>
+                <h3 style="font-size: 20px; margin: 15px 0;">搜尋中毒</h3>
+                <p style="font-size: 16px;">SEO 農場文干擾 RAG 準確度。</p>
+                <i class="fa-solid fa-arrow-down" style="color: #666; margin: 10px 0;"></i>
+                <strong style="color: var(--accent);">Query Optimizer</strong>
+                <p style="font-size: 16px; margin-top: 5px;">強制短關鍵字檢索。</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card prob-sol-card">
+                <i class="fa-solid fa-hourglass-start" style="color: var(--bear-color); font-size: 32px;"></i>
+                <h3 style="font-size: 20px; margin: 15px 0;">API Rate Limits</h3>
+                <p style="font-size: 16px;">429 Error 導致中斷。</p>
+                <i class="fa-solid fa-arrow-down" style="color: #666; margin: 10px 0;"></i>
+                <strong style="color: var(--accent);">Backoff & Retry</strong>
+                <p style="font-size: 16px; margin-top: 5px;">指數退避與冷靜期。</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card prob-sol-card">
+                <i class="fa-solid fa-people-arrows" style="color: var(--bear-color); font-size: 32px;"></i>
+                <h3 style="font-size: 20px; margin: 15px 0;">觀點縫合</h3>
+                <p style="font-size: 16px;">Agent 互相影響導致趨同。</p>
+                <i class="fa-solid fa-arrow-down" style="color: #666; margin: 10px 0;"></i>
+                <strong style="color: var(--accent);">物理隔絕</strong>
+                <p style="font-size: 16px; margin-top: 5px;">不傳入完整 Context。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Impact (Equal Size Cards) -->
+<div class="slide-container" id="slide9">
+    <div class="slide-content">
+        <h2>商業應用價值 <span>Business Impact</span></h2>
+        <div class="grid-3" style="align-items: center;">
+            <div class="card impact-card">
+                <i class="fa-solid fa-chart-line" style="font-size: 48px; color: var(--accent); margin-bottom: 20px;"></i>
+                <h3>自動化投研</h3>
+                <p>加速盡職調查 (Due Diligence)，為分析師提供「已辯證過」的投資簡報，節省 80% 閱讀時間。</p>
+            </div>
+            <div class="card impact-card">
+                <i class="fa-solid fa-chess-rook" style="font-size: 48px; color: var(--manager-color); margin-bottom: 20px;"></i>
+                <h3>企業紅藍軍演練</h3>
+                <p>模擬「競爭對手 Agent」進行 Red Teaming，壓力測試企業戰略或新產品發布計畫。</p>
+            </div>
+            <div class="card impact-card">
+                <i class="fa-solid fa-file-contract" style="font-size: 48px; color: var(--text-main); margin-bottom: 20px;"></i>
+                <h3>法律合規審查</h3>
+                <p>設定 Agent 為「虛擬監管者」，自動掃描合約漏洞或不合規條款。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Conclusion (QR Code Generated) -->
+<div class="slide-container" id="slide10">
+    <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
+        <h1 style="font-size: 80px; margin-bottom: 20px;">Thank You</h1>
+        <p style="font-size: 28px; color: var(--accent); font-style: italic; margin-bottom: 60px;">
+            "Building AI agents that think, debate, and evolve."
+        </p>
+        
+        <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 30px;">
+             <!-- Real QR Code for GitHub -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/YuJunWang/Dialectic-Flow-Financial-Graph" alt="GitHub QR Code">
+        </div>
+        
+        <a href="https://github.com/YuJunWang/Dialectic-Flow-Financial-Graph" class="footer-link">
+            <i class="fa-brands fa-github" style="font-size: 32px;"></i>
+            <span style="font-family: 'JetBrains Mono'; font-size: 20px;">github.com/YuJunWang</span>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

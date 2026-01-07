@@ -6,6 +6,11 @@
 ![Groq](https://img.shields.io/badge/Groq-LPU-F55036?style=flat)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat)
 
+<div align="center">
+
+[![View Presentation](https://img.shields.io/badge/View_Slides-簡報-0A192F?style=for-the-badge&logo=googleslides&logoColor=white)](https://YuJunWang.github.io/Dialectic-Flow-Financial-Graph/)
+
+</div>
 
 這是一個 **Agentic** 的金融分析師團隊，透過模擬 **Bull (多頭/成長型)** 與 **Bear (空頭/做空者)** 之間的辯證過程，交由 **Manager (經理/上司)** 做第三方判斷，產出投資報告，並設定 **Storyteller (說書人)** 角色，協助快速理解目前這支股票的狀況。
 
