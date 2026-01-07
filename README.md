@@ -1,10 +1,14 @@
 # Dialectic Flow Financial Graph 🐂🐻
 
+<div align="center">
+
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![LangGraph](https://img.shields.io/badge/LangGraph-0.0.1-orange)
 ![LangChain](https://img.shields.io/badge/LangChain-🦜️🔗-00C4CC?style=flat)
 ![Groq](https://img.shields.io/badge/Groq-LPU-F55036?style=flat)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat)
+
+</div>
 
 <div align="center">
 
